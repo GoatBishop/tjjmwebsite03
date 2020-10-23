@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文件提交测试</title>
+</head>
+<style>
+    .outForm {
+        width: 500px;
+        background-color: pink;
+        margin: 5px auto;
+    }
+    
+    ul li {
+        list-style-type: none;
+        padding: 0px;
+        margin: 0px;
+        color: blue;
+        text-align:center;
+    }
+    .sub {
+        text-align:center;
+    }
+</style>
+
+<body>
+    <div class="outForm">
+
+        <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+            <div>
+                项目名称:
+                <input type="text" name="work_name">
+            </div>
+            <div>
+                <input type="file" name="paper">
+            </div>
+            {% if file_error %}
+            <p>错误信息</p>
+                <ul>
+                {% for value in file_error.values %}
+                    <li> {{ value }} </li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+            <div class="sub">
+                <input type="submit" value="提交">
+            </div>
+        </form>
+    </div>
+</body>
+
+</html>

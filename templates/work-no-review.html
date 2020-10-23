@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html class="x-admin-sm">
+
+<head>
+    <meta charset="UTF-8">
+    <title>参赛作品</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+    <link rel="stylesheet" href="/static/css/font.css">
+    <link rel="stylesheet" href="/static/css/xadmin.css">
+    <!-- 引入此页面的css -->
+    <link rel="stylesheet" href="/static/css/school-list.css">
+
+
+    <script src="/static/lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/static/js/xadmin.js"></script>
+
+    <style>
+        /* .my-set-02 {
+            color: red;
+        } */
+        
+        .my-set-01 {
+            border: 1px solid rgba(0, 0, 0, 0.096);
+            margin: 2px;
+        }
+        
+        .my-set-03 {
+            float: right;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="x-nav">
+        <span class="layui-breadcrumb">
+            <a href="http://tjjm.aufe.edu.cn/">首页</a>
+
+          </span>
+        <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" onclick="location.reload()" title="刷新">
+            <i class="layui-icon layui-icon-refresh" style="line-height:30px"></i></a>
+    </div>
+    <div class="layui-fluid">
+        <div class="layui-row layui-col-space15">
+            <div class="layui-col-md12">
+                <div class="layui-card">
+                    <div class="layui-card-header my-set-02">
+                        参赛项目表
+                    </div>
+
+                    <div class="layui-card-body ">
+                        <table class="layui-table layui-form">
+                            <thead>
+                                <tr>
+                                    <th>项目编号</th>
+                                    <th>项目类别</th>
+                                    <th>作品word文件</th>
+                                    <th>作品pdf文件</th>
+                                    <th>查重报告</th>
+                                    <th>赛程类型</th>
+                                    <th>评分</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% if works %}
+                                {% for w in works %}
+                                <tr>
+                                    <td>{{ w.work_id.work_id }}</td>
+                                    <td>{{ w.work_id.work_group }}</td>
+                                    <td>
+                                        <a href="/work/{{ w.paper_word }}"><button class="tbody-a">下载作品word版</button></a>
+                                    </td>
+                                    <td>
+                                        <a href="/work/{{ w.paper_pdf }}" target="blank"><button class="tbody-a">下载作品pdf版</button></a>
+                                    </td>
+                                    <td>
+                                        {% if w.paper_cc %}
+                                        <a href="/work/{{ w.paper_cc }}" target="blank"><button class="tbody-a">下载查重报告</button></a>
+                                        {% else %}
+                                        无文件
+                                        {% endif %}                                    </td>
+                                    <td>{{ w.work_id.game_type }}</td>
+                                    <td>
+                                        <button class="tbody-a" onclick="window.location='/review/judge_score/{{ w.work_id.work_id }}'">打分</button>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+</body>
+
+<script>
+    layui.use('form', function() { //此段代码必不可少
+        var form = layui.form;
+        form.render();
+    });
+
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?b393d153aeb26b46e9431fabaf0f6190";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+</html>

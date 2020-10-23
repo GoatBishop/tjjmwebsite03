@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html class="x-admin-sm">
+
+<head>
+    <meta charset="UTF-8">
+    <title>参赛作品</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+    <link rel="stylesheet" href="/static/css/font.css">
+    <link rel="stylesheet" href="/static/css/xadmin.css">
+    <!-- 引入此页面的css -->
+    <link rel="stylesheet" href="/static/css/school-list.css">
+    <script src="/static/lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/static/js/xadmin.js"></script>
+
+    <style>
+        .my-set-02 {
+            color: red;
+        }
+        
+        .my-set-01 {
+            border: 1px solid rgba(0, 0, 0, 0.096);
+            margin: 2px;
+        }
+        
+        .my-set-03 {
+            float: right;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="x-nav">
+        <span class="layui-breadcrumb">
+            <a href="">首页</a>
+          </span>
+        <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" onclick="location.reload()" title="刷新">
+            <i class="layui-icon layui-icon-refresh" style="line-height:30px"></i></a>
+    </div>
+    <div class="layui-fluid">
+        <div class="layui-row layui-col-space15">
+            <div class="layui-col-md12">
+                <div class="layui-card">
+                    <div class="layui-card-header my-set-02">
+                        {{ team.status }}
+                    </div>
+                </div>
+
+                <div class="layui-card">
+                    <div class="layui-card-header">
+                        团队基本信息
+                    </div>
+                    <div class="layui-card-body ">
+
+                        <table class="layui-table layui-form">
+                            <thead>
+                                <tr>
+                                    <th>团队所属院校</th>
+                                    <th>组别</th>
+                                    <th>参赛项目</th>
+                                    <th>第一指导老师姓名</th>
+                                    <th>第一指导老师电话</th>
+                                    <th>第二指导老师姓名</th>
+                                    <th>第二指导老师电话</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{{ team.school.school }}</td>
+                                    <td>{{ team.group }}</td>
+                                    <td>{{ team.work_group }}</td>
+                                    <td>{{ first_instruc.name }}</td>
+                                    <td>{{ first_instruc.telephone }}</td>
+                                    <td>{{ second_instruc.name }}</td>
+                                    <td>{{ second_instruc.telephone }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <br>
+                    </div>
+                </div>
+
+                <div class="layui-card">
+
+                    <div class="layui-card-header">
+                        团队成员信息
+                    </div>
+                    <div class="layui-card-body">
+                        <table class="layui-table layui-form">
+                            <thead>
+                                <tr>
+                                    <th>姓名</th>
+                                    <th>学号</th>
+                                    <th>身份证号</th>
+                                    <th>年级</th>
+                                    <th>专业</th>
+                                    <th>班级</th>
+                                    <th>添加时间</th>
+                                    <th>是否为队长</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{{ captain.member_name }}</td>
+                                    <td>{{ captain.student_number }}</td>
+                                    <td>{{ captain.id_number }}</td>
+                                    <td>{{ captain.grade }}</td>
+                                    <td>{{ captain.major }}</td>
+                                    <td>{{ captain.class_in_school }}</td>
+                                    <td>{{ captain.add_time }}</td>
+                                    <td>{{ captain.is_captain }}</td>
+                                </tr>
+                                {% if member2 %}
+                                <tr>
+                                    <td>{{ member2.member_name }}</td>
+                                    <td>{{ member2.student_number }}</td>
+                                    <td>{{ member2.id_number }}</td>
+                                    <td>{{ member2.grade }}</td>
+                                    <td>{{ member2.major }}</td>
+                                    <td>{{ member2.class_in_school }}</td>
+                                    <td>{{ member2.add_time }}</td>
+                                    <td>{{ member2.is_captain }}</td>
+                                </tr>
+                                {% endif %} {% if member3 %}
+                                <tr>
+                                    <td>{{ member3.member_name }}</td>
+                                    <td>{{ member3.student_number }}</td>
+                                    <td>{{ member3.id_number }}</td>
+                                    <td>{{ member3.grade }}</td>
+                                    <td>{{ member3.major }}</td>
+                                    <td>{{ member3.class_in_school }}</td>
+                                    <td>{{ member3.add_time }}</td>
+                                    <td>{{ member3.is_captain }}</td>
+                                </tr>
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+</body>
+
+<script>
+    layui.use('form', function() { //此段代码必不可少
+        var form = layui.form;
+        form.render();
+    });
+
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?b393d153aeb26b46e9431fabaf0f6190";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+</html>

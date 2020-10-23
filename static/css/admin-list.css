@@ -1,0 +1,68 @@
+/* 修改表单中的样式 */
+
+.x-admin-sm .layui-input,
+.x-admin-sm .layui-select,
+.x-admin-sm .layui-textarea {
+    float: left;
+    width: 580px;
+    margin: 5px 30px;
+    border-radius: 2px;
+    height: 35px;
+}
+
+
+/* 团队列表顶部模块 */
+
+.layui-card {
+    margin-bottom: 20px;
+    margin-top: -10px;
+}
+
+.layui-card-header {
+    font-weight: 700;
+    font-size: 20px;
+}
+
+
+/* 表单前面的文字样式 */
+
+.layui-form label {
+    float: left;
+    display: inline-block;
+    line-height: 40px;
+}
+
+
+/* 按钮 */
+
+.layui-btn {
+    width: 80px;
+    border-radius: 2px;
+}
+
+.layui-btn-danger {
+    background-color: #009688;
+}
+
+
+/* 表格中的详情a连接 */
+
+.tbody-a {
+    color: #24a396;
+}
+
+
+/* 作品列表页面的按钮问题 */
+
+#my_btn {
+    width: 135px!important;
+}
+
+.text p,
+.text span {
+    display: inline-block;
+}
+
+.text span {
+    color: red;
+}

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html class="x-admin-sm">
+
+<head>
+    <meta charset="UTF-8">
+    <title>院校重置密码</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+    <link rel="stylesheet" href="/static/css/font.css">
+    <link rel="stylesheet" href="/static/css/xadmin.css">
+
+</head>
+
+<body>
+    <div class="layui-fluid">
+        <div class="layui-row">
+            <form class="layui-form" method="post" action="">
+            {% csrf_token %}
+                <div class="layui-form-item">
+                    <label for="L_repass" class="layui-form-label">
+                            <span class="x-red">*</span>手机号</label>
+                    <div class="layui-input-inline">
+                        <input type="tel" id="L_repass" name="contacts_telephone" required="" lay-verify="required" autocomplete="off" class="layui-input" placeholder="手机号">
+                        <span>{{ telephone_error }}</span>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="L_repass" class="layui-form-label">
+                            <span class="x-red">*</span>院校名称</label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="L_repass" name="school" required="" lay-verify="required" autocomplete="off" class="layui-input" placeholder="院校名称" list="my_list_school">
+                                <datalist id="my_list_school">
+                                    {% for s in school_list %}
+                                    <option value="{{ s }}">{{ s }}</option>
+                                    {% endfor %}
+                                </datalist>
+                        <span>{{ schoolname_error }}</span>    
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="L_repass" class="layui-form-label">
+                            <span class="x-red">*</span>院校联系人</label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="L_repass" name="contacts" required="" lay-verify="required" autocomplete="off" class="layui-input" placeholder="院校联系人">
+                        <span>{{ contacts_error }}</span>    
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="L_pass" class="layui-form-label">
+                            <span class="x-red">*</span>注册密码</label>
+                    <div class="layui-input-inline">
+                        <input type="password" id="L_pass" name="password" required="" lay-verify="required" autocomplete="off" class="layui-input" placeholder="密码">
+                        
+                        <span>{{ password_error }}</span>        
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">6到16个字符(仅包含大小写字母,数字和下划线)</div>
+                </div>
+                {% if file_error %}
+                <p>错误信息</p>
+                    <ul>
+                    {% for value in file_error.values %}
+                        <li> {{ value }} </li>
+                    {% endfor %}
+                    </ul>
+                {% endif %}
+                <div class="layui-form-item">
+                    <label for="L_repass" class="layui-form-label"></label>
+                    <button class="layui-btn" lay-filter="save" type="submit">点击注册</button></div>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>

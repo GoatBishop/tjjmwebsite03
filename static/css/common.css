@@ -1,0 +1,37 @@
+/* 公共样式 */
+
+
+/* 安徽省大学生统计建模大赛报名及评审系统 */
+
+.container .logo a {
+    width: 380px!important;
+}
+
+
+/* 左边导航条的样式 */
+
+.left-nav a:hover,
+.left-nav a.active {
+    background: #ccc!important;
+    color: black!important;
+}
+
+.sub-menu a:hover {
+    color: #fff !important;
+    background-color: #796aee!important;
+}
+
+
+/* 字体图标样式 */
+
+.layui-icon-export:before {
+    position: absolute;
+    top: 14px;
+    right: 20px;
+}
+
+.layui-card-header {
+    padding: 20px 15px 40px;
+    font-size: 24px;
+    font-weight: 700;
+}

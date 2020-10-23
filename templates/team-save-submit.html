@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html class="x-admin-sm">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+    <link rel="stylesheet" href="/static/css/font.css">
+    <link rel="stylesheet" href="/static/css/xadmin.css">
+    <!-- 引入此页面的css -->
+    <link rel="stylesheet" href="/static/css/school-list.css">
+    <script src="/static/lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/static/js/xadmin.js"></script>
+    <title>温馨提示</title>
+</head>
+
+<body>
+    <div class="layui-card">
+        <div class="layui-card-header">
+            注意
+        </div>
+        
+        <div class="layui-card-body ">
+            </span>一旦提交后，不可修改，需联系所在学校管理员退回。是否继续提交？</span>
+        
+            <form action="" method="POST" class="layui-form">
+            {% csrf_token %}
+                <div class="layui-form-item">
+                    <div class="layui-input-block">       
+                         <input type="radio" name="choose" value="1" title="继续提交"/> 
+                         <input type="radio" name="choose" value="0" title="暂不提交" checked/>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" type="submit">确认</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+<script>
+
+layui.use('form', function(){
+  var form = layui.form;
+
+});
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html class="x-admin-sm">
+
+<head>
+    <meta charset="UTF-8">
+    <title>参赛作品</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+    <link rel="stylesheet" href="/static/css/font.css">
+    <link rel="stylesheet" href="/static/css/xadmin.css">
+    <!-- 引入此页面的css -->
+    <link rel="stylesheet" href="/static/css/school-list.css">
+    <script src="/static/lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/static/js/xadmin.js"></script>
+
+    <style>
+        .my-set-02 {
+            color: red;
+        }
+        
+        .my-set-01 {
+            border: 1px solid rgba(0, 0, 0, 0.096);
+            margin: 2px;
+        }
+        
+        .my-set-03 {
+            float: right;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="x-nav">
+        <span class="layui-breadcrumb">
+            <a href="">首页</a>
+            <a href="">演示</a>
+            <a>
+              <cite>导航元素</cite></a>
+          </span>
+        <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" onclick="location.reload()" title="刷新">
+            <i class="layui-icon layui-icon-refresh" style="line-height:30px"></i></a>
+    </div>
+    <div class="layui-fluid">
+        <div class="layui-row layui-col-space15">
+            <div class="layui-col-md12">
+                <div class="layui-card">
+                    <div class="layui-card-header my-set-02">
+                        {{ team.status }}
+                    </div>
+                </div>
+
+                <div class="layui-card">
+                    <div class="layui-card-header">
+                        团队基本信息
+                    </div>
+                    <div class="layui-card-body ">
+                        <form class="layui-form  layui-col-space5" method="POST" action="">
+                        {% csrf_token %}
+                            <div class="layui-inline layui-show-xs-block">
+                                <label>团队所属院校</label>
+                                <input type="text" name="school" autocomplete="off" class="layui-input" value="{{ school.school }}"  disabled="disabled">
+                            </div>
+                            <div class="layui-inline layui-show-xs-block">
+                                <label>组别</label>
+                                <input type="text" name="group" placeholder="直接选择或搜索选择" autocomplete="off" class="layui-input" list="typelist_group" value="{{ team.group }}">
+                                <datalist id="typelist_group">
+                                        　　<option value="研究生组" >研究生组</option>
+                                        　　<option value="本科生组">本科生组</option>
+                                </datalist>
+                            </div>
+                            <div class="layui-inline layui-show-xs-block">
+                                <label>参赛项目</label>
+                                <input type="text" name="work_group" placeholder="直接选择或搜索选择" autocomplete="off" class="layui-input" list="typelist_project" value="{{ team.work_group }}">
+                                <datalist id="typelist_project">
+                                            <option value="统计建模类">统计建模类</option>
+                                        　　<option value="大数据应用类">大数据应用类</option>
+                                        　　<option value="市场调查分析类">市场调查分析类</option>
+                                        　　<option value="生物医学类">生物医学类</option>
+                                </datalist>
+                            </div>
+                            <div class="layui-inline layui-show-xs-block my-set-01">
+                                <label>第一指导老师</label>
+                                <!-- <div class="my-set-01"> -->
+                                <input type="text" name="first_instru_name" placeholder="指导老师姓名" autocomplete="off" class="layui-input" value="{{ first_instru_name }}">
+                                <input type="text" name="first_instru_telephone" placeholder="指导老师手机号" autocomplete="off" class="layui-input" value="{{ first_instru_telephone }}">
+                                <!-- </div> -->
+                                <span>{{ zhidao1_error }}</span>
+
+                            </div>
+                            <div class="layui-inline layui-show-xs-block my-set-01">
+                                <label>第二指导老师</label>
+                                <!-- <div class="my-set-01"> -->
+                                <input type="text" name="second_instru_name" placeholder="指导老师姓名" autocomplete="off" class="layui-input" value="{{ second_instru_name }}">
+                                <input type="text" name="second_instru_telephone" placeholder="指导老师手机号" autocomplete="off" class="layui-input" value="{{ second_instru_telephone }}">
+                                <!-- </div> -->
+                                <span>{{ zhidao2_error }}</span>
+
+                            </div>
+                            <br>
+                            
+                            {% if  file_error %}
+                            <div class="layui-inline layui-show-xs-block my-set-01">
+                            {{ file_error }}
+                            </div>
+                            {% endif %}
+                            
+                            <button class="layui-btn" id="my_btn" type="submit">提交修改</button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="layui-card">
+
+                    <div class="layui-card-header">
+                        团队成员信息
+                    </div>
+                    <div class="layui-card-body">
+                        <button class="layui-btn" id="my_btn" onclick="xadmin.open('修改队长信息','/team/reg_captain/',490,410)">修改队长信息</button>
+                        <button class="layui-btn" id="my_btn" onclick="xadmin.open('添加队员信息','/team/reg_team_member/',490,410)">添加队员</button>
+
+                        <table class="layui-table layui-form">
+                            <thead>
+                                <tr>
+                                    <th>姓名</th>
+                                    <th>学号</th>
+                                    <th>身份证号</th>
+                                    <th>年级</th>
+                                    <th>专业</th>
+                                    <th>班级</th>
+                                    <th>添加时间</th>
+                                    <th>是否为队长</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{{ captain.member_name }}</td>
+                                    <td>{{ captain.student_number }}</td>
+                                    <td>{{ captain.id_number }}</td>
+                                    <td>{{ captain.grade }}</td>
+                                    <td>{{ captain.major }}</td>
+                                    <td>{{ captain.class_in_school }}</td>
+                                    <td>{{ captain.add_time }}</td>
+                                    <td>{{ captain.is_captain }}</td>
+                                    <td>
+                                        <button onclick="xadmin.open('修改队长信息','/team/reg_captain/',490,410)">修改</button>
+                                    </td>
+                                </tr>
+                                {% if member2 %}
+                                <tr>
+                                    <td>{{ member2.member_name }}</td>
+                                    <td>{{ member2.student_number }}</td>
+                                    <td>{{ member2.id_number }}</td>
+                                    <td>{{ member2.grade }}</td>
+                                    <td>{{ member2.major }}</td>
+                                    <td>{{ member2.class_in_school }}</td>
+                                    <td>{{ member2.add_time }}</td>
+                                    <td>{{ member2.is_captain }}</td>
+                                    <td>
+                                        <button onclick="window.location='/team/del_memb2/{{ member2.telephone }}/'">删除</button>
+                                    </td>
+                                </tr>                                
+                                {% endif %}
+                                {% if member3 %}
+                                <tr>
+                                    <td>{{ member3.member_name }}</td>
+                                    <td>{{ member3.student_number }}</td>
+                                    <td>{{ member3.id_number }}</td>
+                                    <td>{{ member3.grade }}</td>
+                                    <td>{{ member3.major }}</td>
+                                    <td>{{ member3.class_in_school }}</td>
+                                    <td>{{ member3.add_time }}</td>
+                                    <td>{{ member3.is_captain }}</td>
+                                    <td>
+                                        <button onclick="window.location='/team/del_memb3/{{ member3.telephone }}/'">删除</button>
+                                    </td>
+                                </tr>                                
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <a href="/team/save_submit/" class="my-set-03"><button class="layui-btn" id="my_btn">保存修改并提交审核</button></a>
+            </div>
+        </div>
+</body>
+
+<script>
+    layui.use('form', function() { //此段代码必不可少
+        var form = layui.form;
+        form.render();
+    });
+
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?b393d153aeb26b46e9431fabaf0f6190";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+</html>

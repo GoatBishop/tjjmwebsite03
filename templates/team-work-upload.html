@@ -58,10 +58,10 @@
                                     <th>承诺书</th>
                                     <th>报名表</th>
                                     <th>原始数据</th>
-                                    <th>word文件</th>
-                                    <th>pdf文件</th>
+                                    <th>作品word版</th>
+                                    <th>作品pdf版</th>
                                     <th>查重报告</th>
-                                    <th>状态</th>
+                                    <th>作品状态</th>
                                     <th>审核状态</th>
                                     <th>操作</th>
                                 </tr>
@@ -73,7 +73,7 @@
 
                                     <td>
                                     {% if team.work.paper_commit %}
-                                        <a href="/work/{{ team.work.paper_commit }}"><button class="tbody-a">下载承诺书</button></a>
+                                        <a href="/work/{{ team.work.paper_commit }}" target="blank"><button class="tbody-a">下载承诺书</button></a>
                                     {% else %}
                                     没有上传
                                     {% endif %}
@@ -102,14 +102,14 @@
                                     </td>
                                     <td>
                                     {% if team.work.paper_pdf %}
-                                        <a href="/work/{{ team.work.paper_pdf }}"><button class="tbody-a">下载作品pdf</button></a>
+                                        <a href="/work/{{ team.work.paper_pdf }}" target="blank"><button class="tbody-a">下载作品pdf</button></a>
                                     {% else %}
                                     没有上传
                                     {% endif %}
                                     </td>
                                     <td>
                                     {% if team.work.paper_cc %}
-                                        <a href="/work/{{ team.work.paper_cc }}"><button class="tbody-a">下载查重报告</button></a>
+                                        <a href="/work/{{ team.work.paper_cc }}" target="blank"><button class="tbody-a">下载查重报告</button></a>
                                     {% else %}
                                     没有上传
                                     {% endif %}

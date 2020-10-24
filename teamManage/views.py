@@ -62,12 +62,12 @@ def mylogout(request):
     return redirect(reverse('team:tlogin')) 
 
 def myregister(request):
+    schools = models.College.objects.filter(admin_verification = "是")
+    school_list = []
+    for s in  schools:
+        if s.school not in school_list:
+            school_list.append(s.school)
     if request.method == 'GET':
-        schools = models.College.objects.filter(admin_verification = "是")
-        school_list = []
-        for s in  schools:
-            if s.school not in school_list:
-                school_list.append(s.school)
         return render(request, 'team-reg.html', locals())
     elif request.method == 'POST':
         
@@ -84,7 +84,7 @@ def myregister(request):
             
             try:
                 tele = models.Directory.objects.get(telephone = telephone)
-                return HttpResponse("<h1>该号码已被注册!</h1>")
+                return HttpResponse("<h1>注册失败,该号码已被注册!</h1><div> <a href='/team/register/'>点击跳转到注册界面</a></div>")
             except:
                 try:
                     captain_user = models.Member.objects.create(member_name = captain,
@@ -103,20 +103,13 @@ def myregister(request):
                                         <br> <div>服务时间:7:30 - 21:30 </div> \
                                         <br> <div>不常在线,看到回复,谢谢。 </div>")
 
-            return HttpResponse("<h1>注册成功！</h1>")
-        else:
-            file_error = forms.get_errors(teamForm)
-            telephone = request.POST.get('telephone', '')
-            captain = request.POST.get('captain', '')
+            flag_reg = 1
             
-            schools = models.College.objects.all()
-            school_list = []
-            for s in  schools:
-                if s.school not in school_list:
-                    school_list.append(s.school)
-                    
+            return render(request, 'team-reg.html', locals())
+        else:
+            file_error = forms.get_errors(teamForm)                 
             print(teamForm.errors.get_json_data())
-            print("我是: ", captain, "电话为: ", telephone)
+            flag_reg = 0
             return render(request, 'team-reg.html', locals())
         
 def repsw(request):
@@ -125,12 +118,6 @@ def repsw(request):
     elif request.method == 'POST':
         # 获取表单的数据
         telephone = request.POST.get('telephone', '')
-#        password = request.POST.get('password', '')
-#        password2 = request.POST.get('password2', '')
-#        # 验证用户名，密码是否正确
-#        if password != password2:
-#            password2_error = "两次密码不一致"
-#            return render(request, 'team-psw-forget.html', locals())
         try:
             captain_user = models.Member.objects.get(telephone = telephone,
                                              is_captain = "是")
@@ -140,6 +127,7 @@ def repsw(request):
         except:
             #手机验证失败
             user_error = "没有当前手机号"
+            flag_change = 0
             return render(request, 'team-psw-forget.html', locals())
         
         teamForm = forms.TeamChangePswForm(request.POST)
@@ -147,12 +135,14 @@ def repsw(request):
             password = teamForm.cleaned_data.get("password")
             user.password = password
             user.save()
-            return HttpResponse("<h1>修改密码成功！</h1>")        
+            flag_change = 1
+            return render(request, 'team-psw-forget.html', locals()) 
         else:
             file_error = forms.get_errors(teamForm)
             telephone = request.POST.get('telephone', '')
             print(teamForm.errors.get_json_data())
             print("我是的电话为: ", telephone)
+            flag_change = 0
             return render(request, 'team-psw-forget.html', locals())
 
 
@@ -184,8 +174,6 @@ def team_part_info_team(request):
             if instructor.telephone == team.first_instru_telephone:
                 first_instru_name = instructor.name
                 first_instru_telephone = instructor.telephone
-                
-                #====
                 ftele = first_instru_telephone
             else:
                 second_instru_name = instructor.name
@@ -211,7 +199,7 @@ def team_part_info_team(request):
     schools = models.College.objects.all()
     school_list = []
     
-    for s in  schools:
+    for s in schools:
         if s.school not in school_list:
             school_list.append(s.school)
             
@@ -234,40 +222,16 @@ def team_part_info_team(request):
             second_instru_name = teamInfoForm.cleaned_data.get("second_instru_name", "")
             second_instru_telephone = teamInfoForm.cleaned_data.get("second_instru_telephone", "")
             
-            #========save========
-            
-            
-#            if ((first_instru_name != "") & (first_instru_telephone != "")):
-#                try:
-#                    zhidao1 = models.Instructor.objects.get(name = first_instru_name, 
-#                                                   telephone = first_instru_telephone)
-#                    zhidao1.team.add(team)
-#                    team.first_instru_telephone = first_instru_telephone
-#                    team.save()
-#                except:
-#                    zhidao1_error = "没有该指导老师信息"
-#                    return render(request, 'info-team.html', locals())
-            
-            #=======save=========
-            
-#            if ((second_instru_name != "") & (second_instru_telephone != "")):
-#                try:
-#                    zhidao2 = models.Instructor.objects.get(name = second_instru_name, 
-#                                                   telephone = second_instru_telephone)
-#                    zhidao2.team.add(team)
-#                except:
-#                    zhidao2_error = "没有该指导老师信息"
-#                    return render(request, 'info-team.html', locals())
-            
-                
 
             #指导老师信息不完整创建处理           
             if (((first_instru_name == "") & (first_instru_telephone != "")) | ((first_instru_name != "") & (first_instru_telephone == ""))):
                 zhidao1_error = "第一指导老师信息不完整"
+                flag_change = 0
                 return render(request, 'info-team.html', locals())
 
             if (((second_instru_name == "") & (second_instru_telephone != "")) | ((second_instru_name != "") & (second_instru_telephone == ""))):
                 zhidao2_error = "第二指导老师信息不完整"
+                flag_change = 0
                 return render(request, 'info-team.html', locals())
 
             #指导老师已存在该团队中，再次修改处理
@@ -280,7 +244,7 @@ def team_part_info_team(request):
                     print("清扫--02")
                     team.instru.clear()
             
-                #指导老师信息完整，判断是否存入数据库
+            #指导老师信息完整，判断是否存入数据库
             if ((first_instru_name != "") & (first_instru_telephone != "")):
                 
                 try:
@@ -319,10 +283,27 @@ def team_part_info_team(request):
                     zhidao2.team.add(team)
                     team.save()
             
+            instructors = team.instru.all()
+            print(instructors)
+            if instructors:
+                for instructor in instructors:
+                    if instructor.telephone == team.first_instru_telephone:
+                        first_instru_name = instructor.name
+                        first_instru_telephone = instructor.telephone
+                    else:
+                        second_instru_name = instructor.name
+                        second_instru_telephone = instructor.telephone
+            else:
+                first_instru_name = ""
+                first_instru_telephone = ""
+                second_instru_name = ""
+                second_instru_telephone = ""
+            flag_change = 1
             return render(request, 'info-team.html', locals())
         else:
             file_error = forms.get_errors(teamInfoForm)
             print(teamInfoForm.errors.get_json_data())
+            flag_change = 0
             return render(request, 'info-team.html', locals())
             
 
@@ -402,7 +383,6 @@ def team_part_info_team_over(request):
     elif request.method == "POST":
         return HttpResponse("<h1>没有POST方法!</h1>")
 
-
 def upload_word_pdf(request):
     session_team = request.session.get('userinfo', '')
     telephone = session_team['telephone']
@@ -411,6 +391,7 @@ def upload_word_pdf(request):
     if request.method == "GET":
         return render(request, "upload-work-word-pdf-cc.html", locals())
     elif request.method == "POST":
+        flag_up = 0
         workForm = forms.WorkForm(request.POST, request.FILES)
         if workForm.is_valid():
             print("我进入clean了")
@@ -463,7 +444,7 @@ def upload_word_pdf(request):
                     work.paper_pdf = work_pdf
                     
                 if work_cc is not None:
-                    if work_pdf.size > 10485760:
+                    if work_cc.size > 10485760:
                         cc_size_error = "上传文件过大"
                         return render(request, "upload-work-word-pdf-cc.html", locals())
 
@@ -513,10 +494,11 @@ def upload_word_pdf(request):
             
             work.status = status
             work.save()
-            html = "<h1>作品word/pdf版{}成功</h1>".format(status)
+            my_html = "<div>作品word/pdf版{}成功</div>".format(status)
             for m in my_massage:
-                html += "<br> 新增信息: " + m
-            return HttpResponse(html)
+                my_html += "<div> 新增信息: " + m + "</div>"
+            flag_up = 1
+            return render(request, "upload-work-word-pdf-cc.html", locals())
         else:
             file_error = forms.get_errors(workForm)
             return render(request, "upload-work-word-pdf-cc.html", locals())
@@ -549,6 +531,7 @@ def reg_member(request):
         else:
             return render(request, 'reg-member-info.html', locals())
     elif request.method == 'POST':
+        flag_add = 0
         memberForm = forms.MemberForm(request.POST, request.FILES)
         if memberForm.is_valid():
             member_name = memberForm.cleaned_data.get('member_name')
@@ -575,7 +558,8 @@ def reg_member(request):
                 print("1个队员没填写,现在我要增加队员3了")
                 team.tele_member3 = telephone
                 team.save()
-            return render(request, "team-info-team-success.html", locals())
+            flag_add = 1
+            return render(request, "reg-member-info.html", locals())
         else:
             file_error = forms.get_errors(memberForm)
             print(memberForm.errors.get_json_data())
@@ -589,6 +573,7 @@ def reg_captain(request):
     if request.method == 'GET':
         return render(request, 'reg-captain-info.html', locals())
     elif request.method == 'POST':
+        flag_change = 0
         captainForm = forms.CaptainForm(request.POST, request.FILES)
         if captainForm.is_valid():
 #            member_name = captainForm.cleaned_data.get('member_name')
@@ -609,7 +594,8 @@ def reg_captain(request):
             captain.is_captain = "是"
             captain.save()
             
-            return render(request, "team-info-team-success.html", locals())
+            flag_change = 1
+            return render(request, 'reg-captain-info.html', locals())
         else:
             file_error = forms.get_errors(captainForm)
             print(captainForm.errors.get_json_data())

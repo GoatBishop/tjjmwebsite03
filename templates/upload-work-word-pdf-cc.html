@@ -47,7 +47,7 @@
                         </div>
                         <div class="layui-form-item">
                             <label class="layui-form-label">
-                                 选择word文件(最大10M)
+                                 作品word版(最大10M)
                               </label>
                             <div class="layui-input-inline">
                                 <input type="file" name="paper_word">
@@ -57,7 +57,7 @@
 
                         <div class="layui-form-item">
                             <label class="layui-form-label">
-                                 选择pdf文件(最大10M)
+                                 作品pdf版(最大10M)
                               </label>
                             <div class="layui-input-inline">
                                 <input type="file" name="paper_pdf">
@@ -132,6 +132,23 @@
             var s = document.getElementsByTagName("script")[0];
             s.parentNode.insertBefore(hm, s);
         })();
+        
+    
+
+    {% if flag_up == 1 %}
+        layui.use('layer', function(){
+          var layer = layui.layer;
+          
+          layer.msg('{{ my_html }}');
+        }); 
+    {% elif flag_up == 0 %}
+        layui.use('layer', function(){
+          var layer = layui.layer;
+          
+          layer.msg('文件上传失败');
+        }); 
+    {% endif %}
+        
     </script>
 </body>
 

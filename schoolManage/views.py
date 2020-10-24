@@ -91,10 +91,11 @@ def mylogout(request):
 
 
 def myregister(request):
+    school_list = get_all_school_list()
     if request.method == 'GET':
-        school_list = get_all_school_list()
         return render(request, 'sch-forgetpass.html', locals())
     elif request.method == 'POST':
+        flag_reg = 0
         collegeForm = forms.CollegeForm(request.POST, request.FILES)
         
         if collegeForm.is_valid():
@@ -107,8 +108,8 @@ def myregister(request):
             except:
                 collegeForm.save()
                 tele = models.Directory.objects.create(telephone = contacts_telephone, group = "院校负责人")
-            
-            return HttpResponse("<h1>注册成功！</h1>")
+            flag_reg = 1
+            return render(request, 'sch-forgetpass.html', locals())
         else:
             file_error = forms.get_errors(collegeForm)
             contacts_telephone = request.POST.get('contacts_telephone', '')
@@ -118,7 +119,6 @@ def myregister(request):
             print(collegeForm.errors.get_json_data())
             print("我是: ", contacts, "学校为: ", school,
                   '电话是：', contacts_telephone)
-            school_list = get_all_school_list()
             return render(request, 'sch-forgetpass.html', locals())
             
         
@@ -126,6 +126,7 @@ def repsw(request):
     if request.method == 'GET':
         return render(request, 'sch-password.html', locals())
     elif request.method == 'POST':
+        flag_change = 0
         # 获取表单的数据
         contacts_telephone = request.POST.get('contacts_telephone', '')
         password = request.POST.get('password', '')
@@ -141,7 +142,8 @@ def repsw(request):
             user = models.College.objects.get(contacts_telephone = contacts_telephone)
             user.password = password
             user.save()
-            return HttpResponse("<h1>修改密码成功！</h1>")
+            flag_change = 1
+            return render(request, 'sch-password.html', locals())
             # 在当前连接的Session中记录当前用户的信息
         except:
             #手机验证失败

@@ -494,9 +494,9 @@ def upload_word_pdf(request):
             
             work.status = status
             work.save()
-            my_html = "<div>作品word/pdf版{}成功</div>".format(status)
+            my_html = "作品{}成功. ".format(status)
             for m in my_massage:
-                my_html += "<div> 新增信息: " + m + "</div>"
+                my_html += "新增信息: " + m + "; "
             flag_up = 1
             return render(request, "upload-work-word-pdf-cc.html", locals())
         else:

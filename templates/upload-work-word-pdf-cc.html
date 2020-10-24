@@ -136,11 +136,13 @@
     
 
     {% if flag_up == 1 %}
+    
         layui.use('layer', function(){
           var layer = layui.layer;
           
-          layer.msg('{{ my_html }}');
+          layer.alert('{{ my_html }}', {icon: 1});
         }); 
+    
     {% elif flag_up == 0 %}
         layui.use('layer', function(){
           var layer = layui.layer;

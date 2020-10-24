@@ -9,7 +9,8 @@
     <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
     <link rel="stylesheet" href="/static/css/font.css">
     <link rel="stylesheet" href="/static/css/xadmin.css">
-
+    <script type="text/javascript" src="/static/lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/static/js/xadmin.js"></script>
 </head>
 
 <body>
@@ -70,6 +71,27 @@
             </form>
         </div>
     </div>
+    
+    
+    <script>
+
+    {% if flag_reg == 1 %}
+    
+        layui.use('layer', function(){
+          var layer = layui.layer;
+          
+          layer.alert('注册成功！', {icon: 1});
+        }); 
+    
+    {% elif flag_reg == 0 %}
+        layui.use('layer', function(){
+          var layer = layui.layer;
+          
+          layer.msg('注册失败！');
+        }); 
+    {% endif %}
+        
+    </script>
 </body>
 
 </html>

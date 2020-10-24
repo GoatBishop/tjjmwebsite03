@@ -89,11 +89,11 @@
         });
         
         {% if flag_reg == 1 %}
-            layui.use('layer', function(){
-              var layer = layui.layer;
-              
-              layer.msg('注册成功');
-            }); 
+        layui.use('layer', function(){
+          var layer = layui.layer;
+          
+          layer.alert('注册成功！', {icon: 1});
+        }); 
         {% elif flag_reg == 0 %}
             layui.use('layer', function(){
               var layer = layui.layer;

@@ -24,8 +24,8 @@ urlpatterns = [
     re_path(r'team_pass/(\w+)/', views.team_pass),
     re_path(r'team_no_pass/(\w+)/', views.team_no_pass),
     re_path(r'excel_download/(\w+)/', views.excel_download),
-    re_path(r'pdf_download/(\w+)/', views.pdf_download),
-    re_path(r'word_download/(\w+)/', views.word_download),
+    re_path(r'work_all/(\w+)/', views.work_all),
+    re_path(r'work_wait/(\w+)/', views.work_wait),
     re_path(r'submit/(\w+)/', views.my_submit),
     re_path(r'tuihui/(\w+)/', views.my_tuihui),
 ]

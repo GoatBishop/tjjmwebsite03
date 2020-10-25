@@ -550,24 +550,31 @@ def excel_download(request, context):
 
     return HttpResponseRedirect(("/work/data_output/"+ context + temp_time + ".csv"))
     
-def pdf_download(request, context):
+def work_wait(request, context):
     session_school = request.session.get('userinfo', '')
     school = session_school['school']
     school = models.College.objects.get(school = school)
     teams = models.Team.objects.filter(school = school,
                                        status_is_pass = "通过")
-    if context == "work_all":
-        works = [t.work for t in teams if t.work.status != "未上传"]
-    else:
-        works = [t.work for t in teams if t.work.status == "已上传"]
-    
+    works = [t.work for t in teams if t.work.status == "已上传"]
     temp_time = str(int(time.time()))
     dir_name = "z" + temp_time
     dir_path = "./work/data_output/" + dir_name
     os.mkdir(dir_path)
     for w in works:
-        file_name = str(w.paper_pdf)
-        
+        if context == "word":
+            file_name = str(w.paper_word)
+        elif context == "pdf":
+            file_name = str(w.paper_pdf)
+        elif context == "cc":
+            file_name = str(w.paper_cc)
+        elif context == "commit":
+            file_name = str(w.paper_commit)
+        elif context == "sign_up":
+            file_name = str(w.paper_sign_up)
+        elif context == "game_data":
+            file_name = str(w.paper_game_data)
+            
         if file_name == "":
             continue
         
@@ -579,23 +586,31 @@ def pdf_download(request, context):
     
     return HttpResponseRedirect(("/work/data_output/" + dir_name + ".zip"))
 
-def word_download(request, context):
+def work_all(request, context):
     session_school = request.session.get('userinfo', '')
     school = session_school['school']
     school = models.College.objects.get(school = school)
     teams = models.Team.objects.filter(school = school,
                                        status_is_pass = "通过")
-    if context == "work_all":
-        works = [t.work for t in teams if t.work.status != "未上传"]
-    else:
-        works = [t.work for t in teams if t.work.status == "已上传"]
-    
+    works = [t.work for t in teams if t.work.status != "未上传"]
     temp_time = str(int(time.time()))
     dir_name = "z" + temp_time
     dir_path = "./work/data_output/" + dir_name
     os.mkdir(dir_path)
     for w in works:
-        file_name = str(w.paper_word)
+        if context == "word":
+            file_name = str(w.paper_word)
+        elif context == "pdf":
+            file_name = str(w.paper_pdf)
+        elif context == "cc":
+            file_name = str(w.paper_cc)
+        elif context == "commit":
+            file_name = str(w.paper_commit)
+        elif context == "sign_up":
+            file_name = str(w.paper_sign_up)
+        elif context == "game_data":
+            file_name = str(w.paper_game_data)
+            
         if file_name == "":
             continue
         

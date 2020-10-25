@@ -127,6 +127,7 @@ class Work(models.Model):
 
     
     status = models.CharField('状态', max_length = 20, default="未上传")
+    #未上传->已上传->退回/报送
         
     def __str__(self):
         return  self.work_id

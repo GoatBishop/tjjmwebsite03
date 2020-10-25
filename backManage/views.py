@@ -433,7 +433,6 @@ def assign_judges(request):
             pass
         else:
             judge_list.append(j)
-    
     print(judge_list)
     
     if request.method == "GET":
@@ -441,7 +440,6 @@ def assign_judges(request):
     elif request.method == "POST":
         flag_close = 0
         number = request.POST.get("number", "")
-        
         if number:
             num = int(number)
             print(num)

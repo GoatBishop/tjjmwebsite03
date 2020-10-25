@@ -18,7 +18,7 @@
         .my-set-01 {
             float: right;
             font-size: 15px;
-            width: 150px;
+            width: 200px;
         }
         
         .my-set-02 {
@@ -72,9 +72,16 @@
         </div>
     </div>
     <div class="my-set-01">
-        总分:
+        均分:
         <span class="my-set-03">{{ ave_score }}</span>
+    <br>
+    {% if output_range %}
+        评分全距过大,全距为:
+        <span class="my-set-03">{{ output_range }}</span>
+    {% endif %}
     </div>
+    
+    
     <div class="my-set-02">
         <button class="layui-btn" onclick="window.location='/review/already_review_work/'">返回</button>
     </div>

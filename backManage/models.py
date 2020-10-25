@@ -164,7 +164,7 @@ class Directory(models.Model):
 
 
 class SystemVar(models.Model):
-    username = models.CharField('用户名', max_length = 30, default = "管理员")
+    username = models.CharField('用户名', max_length = 30, unique = True)
     score_range = models.PositiveIntegerField("得分全距", default = 30)
     work_num = models.PositiveIntegerField("评委最多评审作品数", default = 50)
     

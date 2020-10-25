@@ -22,5 +22,6 @@ urlpatterns = [
     re_path(r'excel_download/(\w+)/', views.excel_download, name = "tuihui"),
     re_path(r'file_download/(\w+)/', views.file_download),
     path('assign_judges/', views.assign_judges),
-    path('system_var/', views.system_var),
+    path('system_var/', views.system_var, name = "systemvar"),
+    path('initialization_var/', views.initialization_var)
 ]

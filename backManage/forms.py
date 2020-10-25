@@ -117,9 +117,6 @@ class WorkForm(forms.Form):
     paper_game_data = forms.FileField(required = False, 
                                validators = [validators.FileExtensionValidator(['zip', 'rar'], message = "文件必须为zip/rar格式")])
 
-#    class Meta:
-#        model = Work
-#        fields = ['paper_word', 'paper_pdf']
 
 class WorkScoreForm(forms.Form):
     score = forms.CharField(validators=[validators.RegexValidator(r"[0-9]|[1-9]\d|100",message='请输入0~100之内的整数！')])
@@ -130,3 +127,9 @@ class JudgeForm(forms.Form):
     password = forms.CharField(validators=[validators.RegexValidator(r"r\w{5}", message = '请输入格式为[小写字母r + 5位数字]的6位密码,！')])
     judge_type = forms.CharField(max_length = 30,
                               validators=[validators.RegexValidator(r"校内评委|校外评委",message='请输入下拉框里的内容!')])
+    
+class SystemVarForm(forms.Form):
+    score_range = forms.CharField(max_length = 20,
+                                  validators=[validators.RegexValidator(r"[1-9]|[1-9]\d|100",message='请输入1~100之内的整数！')])
+    work_num = forms.CharField(max_length = 20,
+                               validators=[validators.RegexValidator(r"[1-9]|[1-9]\d|1\d{2}|200",message='请输入1~200之内的整数！')])

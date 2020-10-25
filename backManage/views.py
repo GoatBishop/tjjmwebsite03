@@ -127,10 +127,42 @@ def work_list(request):
 
 @login_required(login_url='/back/login/')
 def system_var(request):
+    try:
+        my_set = models.SystemVar.objects.get(username = "管理员")
+    except Exception as e:
+        my_set = models.SystemVar.objects.create(username = "管理员",
+                                                 score_range = 30,
+                                                 work_num = 50)
     if request.method == "GET":
-        pass
+        return render(request, "system-var.html", locals())
     elif request.method == "POST":
-        pass
+        print("======我进入POST方法了====")
+        systemVarForm = forms.SystemVarForm(request.POST, request.FILES)
+        if systemVarForm.is_valid():
+            score_range = systemVarForm.cleaned_data.get('score_range')
+            work_num = systemVarForm.cleaned_data.get('work_num')
+            my_set.score_range = score_range
+            my_set.work_num = work_num
+            my_set.save()
+            return redirect(reverse("back:systemvar"))
+        else:
+            flag_set = 0
+            return render(request, "system-var.html", locals())
+
+@login_required(login_url='/back/login/')
+def initialization_var(request):
+    print("======我保存了====")
+    try:
+        my_set = models.SystemVar.objects.get(username = "管理员")
+    except Exception as e:
+        my_set = models.SystemVar.objects.create(username = "管理员",
+                                                 score_range = 30,
+                                                 work_num = 50)
+    my_set.score_range = 30
+    my_set.work_num = 50
+    my_set.save()
+    print("我保存了")
+    return redirect(reverse("back:systemvar"))
 
 
 @login_required(login_url='/back/login/')
@@ -383,13 +415,25 @@ def mylogout(request):
     
 @login_required(login_url='/back/login/')
 def assign_judges(request):
-
+#2020-10-25新增
     teams = models.Team.objects.filter(status_is_pass = "通过",
                                        status_is_submit = "报送",
                                        status_is_review = "否")
+    sys_var = models.SystemVar.objects.get(username = "管理员")
+    len_max_js = sys_var.work_num
     works = [t.work for t in teams]
     judges = models.Judge.objects.all()
-    judge_list = list(judges)
+    judge_list_temp = list(judges)
+    judge_list = []
+    
+    for j in judge_list_temp:
+        js = j.score.all()
+        len_js = len(js)
+        if len_js >= len_max_js:
+            pass
+        else:
+            judge_list.append(j)
+    
     print(judge_list)
     
     if request.method == "GET":
@@ -397,20 +441,26 @@ def assign_judges(request):
     elif request.method == "POST":
         flag_close = 0
         number = request.POST.get("number", "")
+        
         if number:
             num = int(number)
             print(num)
+            
             for w in works:
                 random.shuffle(judge_list)
                 wj_list = judge_list[:num]
                 for item in wj_list:
                     s = models.Score.objects.create(work = w,
                                                     judge = item)
+                judge_list = [j for j in judge_list if len(j.score.all()) < len_max_js]
+            
             for t in teams:
                 t.status_is_review = "是"
                 t.save()
-            flag_close = 1
-            return render(request, "distribution-teacher.html", locals())
+                    
+                flag_close = 1
+                
+                return render(request, "distribution-teacher.html", locals())
         else:
             return render(request, "distribution-teacher.html", locals())
 

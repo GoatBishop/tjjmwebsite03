@@ -146,12 +146,25 @@ def judge_already_score(request, work_id):
     team = models.Team.objects.get(work_id = work_id)
     work =  models.Work.objects.get(work_id = team)
     score = models.Score.objects.get(work = work, judge = judge)
+    
+    score_range = models.SystemVar.objects.get(username = "管理员").score_range
+    
     score_ponit = score.judge_detail
     score = score.judge_score
     work_score = models.Score.objects.filter(work = work)
     score_list = [s.judge_score for s in work_score]
     score_list_limit = [int(sl) for sl in score_list if sl != "0"]
     ave_score = round(sum(score_list_limit)/len(score_list_limit), 2)
+    max_score = max(score_list_limit)
+    min_score = min(score_list_limit)
+    this_range = max_score - min_score
+    print(this_range)
+    if this_range >= score_range:
+        print("我真的很大")
+        output_range = this_range
+    else:
+        pass
+    
     return render(request, 'judge-score-details.html', locals())
 
 def mylogout(request):

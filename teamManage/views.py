@@ -17,7 +17,6 @@ def work_id_random(id_length = 2):
         work_id += random.choice(num)
     return work_id
 
-
 def mylogin(request):
     if request.method == 'GET':
         print("teamManage: 我是mylogin的GET")
@@ -145,7 +144,6 @@ def repsw(request):
             flag_change = 0
             return render(request, 'team-psw-forget.html', locals())
 
-
 def team_index(request):
     session_team = request.session.get('userinfo', '')
     if session_team:
@@ -222,7 +220,6 @@ def team_part_info_team(request):
             second_instru_name = teamInfoForm.cleaned_data.get("second_instru_name", "")
             second_instru_telephone = teamInfoForm.cleaned_data.get("second_instru_telephone", "")
             
-
             #指导老师信息不完整创建处理           
             if (((first_instru_name == "") & (first_instru_telephone != "")) | ((first_instru_name != "") & (first_instru_telephone == ""))):
                 zhidao1_error = "第一指导老师信息不完整"
@@ -265,7 +262,6 @@ def team_part_info_team(request):
                     team.first_instru_telephone = first_instru_telephone
                     team.save()
 
-            
             
             if ((second_instru_name != "") & (second_instru_telephone != "")):
                 
@@ -334,7 +330,6 @@ def del_member3(request, member_tele):
         return redirect(reverse("team:teaminfo"))
     except:
         return HttpResponse("没有找到该队员信息,删除失败")
-
 
 def team_save_submit(request):
     session_team = request.session.get('userinfo', '')
@@ -601,9 +596,6 @@ def reg_captain(request):
             print(captainForm.errors.get_json_data())
             return render(request, 'reg-captain-info.html', locals())
     
-
-
-
 
 
 

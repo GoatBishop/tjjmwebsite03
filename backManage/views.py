@@ -519,6 +519,13 @@ def file_download(request, context):
             file_name = str(w.paper_word)
         elif context == "cc":
             file_name = str(w.paper_cc)
+        if context == "commit":
+            file_name = str(w.paper_commit)
+        elif context == "sign_up":
+            file_name = str(w.paper_sign_up)
+        elif context == "game_data":
+            file_name = str(w.paper_game_data)
+            
         if file_name == "":
             continue
         print("我在这")

@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-
 from django.urls import path,include,re_path
 from . import views
 

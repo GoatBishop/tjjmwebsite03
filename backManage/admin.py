@@ -53,3 +53,10 @@ class Score_Manager(admin.ModelAdmin):
     list_filter = ["judge"]
 
 admin.site.register(models.Score, Score_Manager)
+
+class SystemVar_Manager(admin.ModelAdmin):
+    list_display = ["username", "score_range", 
+                    "work_num"]
+    list_editable = ["score_range", "work_num"]
+
+admin.site.register(models.SystemVar, SystemVar_Manager)

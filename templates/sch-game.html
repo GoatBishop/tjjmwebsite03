@@ -83,6 +83,7 @@
                         <table class="layui-table layui-form">
                             <thead>
                                 <tr>
+                                    <th>团队编号</th>
                                     <th>组别</th>
                                     <th>项目名称</th>
                                     <th>团队长</th>
@@ -91,35 +92,45 @@
                                     <th>第二指导老师</th>
                                     <th>添加时间</th>
                                     <th>下载</th>
-                                    <th>状态</th>
+                                    <th>作品状态</th>
                                     <th>操作</th>
                                 </tr>
                             </thead>
                             <tbody>
 
                              {% if teams %}
-                                {% for t in teams %}
+                                {% for z in zip_data %}
                                         <tr>
-                                            <td>{{ t.group }}</td>
-                                            <td>{{ t.work_group }}</td>
-                                            <td>{{ t.telephone.member_name }}</td>
-                                            <td>{{ t.school.school }}</td>
-                                            <td>-</td>
-                                            <td>-</td>
+                                            <td>{{ z.0.work_id }}</td>
+                                            <td>{{ z.0.group }}</td>
+                                            <td>{{ z.0.work_group }}</td>
+                                            <td>{{ z.1.member_name }}</td>
+                                            <td>{{ z.0.school.school }}</td>
+                                            {% if z.2.0 %}
+                                            <td>{{ z.2.0.name }}</td>
+                                            {% else %}
+                                            <td> - </td>
+                                            {% endif %}
+                                            
+                                            {% if z.2.1 %}
+                                            <td>{{ z.2.1.name }}</td>
+                                            {% else %}
+                                            <td> - </td>
+                                            {% endif %}
                                             <td>{{ t.add_time }}</td>
 
                                     <td>
-                                    {% if t.work.status == "已上传" %}
-                                        <a href="/work/{{ t.work.paper_word }}"><button class="tbody-a">下载word</button></a>
-                                        <a href="/work/{{ t.work.paper_pdf }}"><button class="tbody-a">下载pdf</button></a>
-                                        <a href="/work/{{ t.work.paper_cc }}"><button class="tbody-a">下载查重报告</button></a>
+                                    {% if z.3.status == "已上传" %}
+                                        <a href="/work/{{ z.3.paper_word }}"><button class="tbody-a">下载word</button></a>
+                                        <a href="/work/{{ z.3.paper_pdf }}" target="blank"><button class="tbody-a">下载pdf</button></a>
+                                        <a href="/work/{{ z.3.paper_cc }}" target="blank"><button class="tbody-a">下载查重报告</button></a>
                                     {% endif %}
                                     </td>
-                                     <td>{{ t.work.status }}</td>
+                                     <td>{{ z.3.status }}</td>
                                     <td>
-                                    {% if t.work.status == "已上传" %}
-                                        <a class="tbody-a" href="/school/submit/{{ t.work_id}}">报送</a>
-                                        <a class="tbody-a" href="/school/tuihui/{{ t.work_id }}/">退回</a>
+                                    {% if z.3.status == "已上传" %}
+                                        <a class="tbody-a" href="/school/submit/{{ z.0.work_id}}">报送</a>
+                                        <a class="tbody-a" href="/school/tuihui/{{ z.0.work_id }}/">退回</a>
                                     {% endif %}
                                     </td>
                                 </tr>

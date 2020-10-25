@@ -42,6 +42,7 @@
                                 <tr>
                                     <th>院校</th>
                                     <th>总团队数</th>
+                                    <th>管理员是否审核</th>
                             </thead>
                             <tbody>
                                 {% if school_team %}
@@ -49,6 +50,7 @@
                                 <tr>
                                     <td>{{ t.0.school }}</td>
                                     <td>{{ t.1 }}</td>
+                                    <td>{{ t.2 }}</td>
                                 </tr>
                                 {% endfor %}
                                 {% endif %}

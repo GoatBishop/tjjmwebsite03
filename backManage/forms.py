@@ -129,4 +129,4 @@ class JudgeForm(forms.Form):
     judge_username = forms.CharField(max_length = 20)
     password = forms.CharField(validators=[validators.RegexValidator(r"r\w{5}", message = '请输入格式为[小写字母r + 5位数字]的6位密码,！')])
     judge_type = forms.CharField(max_length = 30,
-                              validators=[validators.RegexValidator(r"普通评委|非普通评委",message='请输入下拉框里的内容!')])
+                              validators=[validators.RegexValidator(r"校内评委|校外评委",message='请输入下拉框里的内容!')])

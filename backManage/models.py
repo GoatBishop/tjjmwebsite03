@@ -134,8 +134,8 @@ class Work(models.Model):
 class Judge(models.Model):
     judge_username = models.CharField('用户名', max_length = 20, unique = True)
     judge_name = models.CharField('评委姓名', max_length = 30, default = "")
-    password = models.CharField('密码', max_length = 6, default = "000000")
-    judge_type = models.CharField('评委类型', max_length = 30, default = "普通评委")
+    password = models.CharField('密码', max_length = 6, default = "r00000")
+    judge_type = models.CharField('评委类型', max_length = 30, default = "校外评委")
     judge_works = models.ManyToManyField("Work", related_name = "judge", null = True)
     add_time = models.DateTimeField("添加时间", default = timezone.now())
     def __str__(self):
@@ -161,3 +161,11 @@ class Directory(models.Model):
     def __str__(self):
         return  self.telephone
 
+
+class SystemVar(models.Model):
+    username = models.CharField('用户名', max_length = 30, default = "管理员")
+    score_range = models.PositiveIntegerField("得分全距", default = 30)
+    work_num = models.PositiveIntegerField("评委最多评审作品数", default = 50)
+    
+    def __str__(self):
+        return  self.username

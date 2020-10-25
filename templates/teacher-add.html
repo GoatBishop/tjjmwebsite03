@@ -53,8 +53,8 @@
                     <label class="layui-form-label">评委类型</label>
                     <div class="layui-input-block ">
                         <select name="judge_type" lay-verify="required">
-                        <option value="普通评委">普通评委</option>
-                        <option value="非普通评委">非普通评委</option>
+                        <option value="校内评委">校内评委</option>
+                        <option value="校外评委">校外评委</option>
                       </select>
                     </div>
                 </div>
@@ -79,6 +79,18 @@
         form.render();
     });
 
+        {% if flag_add == 1 %}
+        layui.use('layer', function(){
+          var layer = layui.layer;
+          
+          layer.alert('评委信息修改成功!', {icon: 1});
+        }); 
+        {% elif flag_add == 0 %}
+            layui.use('layer', function(){
+              var layer = layui.layer;
+              layer.msg('评委信息修改失败');
+            }); 
+        {% endif %}
     </script>
     <script>
         var _hmt = _hmt || [];

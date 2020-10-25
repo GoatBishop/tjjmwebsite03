@@ -217,6 +217,31 @@ def part_game_team(request):
     school = session_school['school']
     school = models.College.objects.get(school = school)
     teams = models.Team.objects.filter(school = school, status = "待审核")
+    
+    captains = [t.telephone for t in teams]
+
+    instruc_list = []
+    for t in teams:
+        instruc_inner = ["", ""]
+        temp_instruc = t.instru.all()
+        len_instruc = len(temp_instruc)
+        if len_instruc == 0:
+            instruc_list.append(instruc_inner)
+        elif len_instruc == 1:
+            for i in temp_instruc:
+                instruc_inner[0] = i
+            instruc_list.append(instruc_inner)
+        elif len_instruc == 2:
+            for i in temp_instruc:
+                if i.telephone == t.first_instru_telephone:
+                    instruc_inner[0] = i
+                else:
+                    instruc_inner[1] = i
+                instruc_list.append(instruc_inner)
+    #数据集合
+    zip_data = zip(teams, captains, instruc_list)
+    
+    
     print(teams)
 #    captains = models.Member.objects.filter()
     all_num = school.number_team
@@ -252,6 +277,30 @@ def part_game_team_all(request):
     school = session_school['school']
     school = models.College.objects.get(school = school)
     teams = models.Team.objects.filter(school = school)
+    
+    captains = [t.telephone for t in teams]
+
+    instruc_list = []
+    for t in teams:
+        instruc_inner = ["", ""]
+        temp_instruc = t.instru.all()
+        len_instruc = len(temp_instruc)
+        if len_instruc == 0:
+            instruc_list.append(instruc_inner)
+        elif len_instruc == 1:
+            for i in temp_instruc:
+                instruc_inner[0] = i
+            instruc_list.append(instruc_inner)
+        elif len_instruc == 2:
+            for i in temp_instruc:
+                if i.telephone == t.first_instru_telephone:
+                    instruc_inner[0] = i
+                else:
+                    instruc_inner[1] = i
+                instruc_list.append(instruc_inner)
+    #数据集合
+    zip_data = zip(teams, captains, instruc_list)
+    
 #    captains = models.Member.objects.filter()
     all_num = school.number_team
     team_num = len(teams)
@@ -289,6 +338,31 @@ def part_game_paper(request):
     teams_temp = models.Team.objects.filter(school = school, status_is_pass = "通过")
 #    works = [t.work for t in teams]
     teams = [t for t in teams_temp if t.work.status == "已上传"]
+    
+    captains = [t.telephone for t in teams]
+    works = [t.work for t in teams]
+
+    instruc_list = []
+    for t in teams:
+        instruc_inner = ["", ""]
+        temp_instruc = t.instru.all()
+        len_instruc = len(temp_instruc)
+        if len_instruc == 0:
+            instruc_list.append(instruc_inner)
+        elif len_instruc == 1:
+            for i in temp_instruc:
+                instruc_inner[0] = i
+            instruc_list.append(instruc_inner)
+        elif len_instruc == 2:
+            for i in temp_instruc:
+                if i.telephone == t.first_instru_telephone:
+                    instruc_inner[0] = i
+                else:
+                    instruc_inner[1] = i
+                instruc_list.append(instruc_inner)
+    #数据集合
+    zip_data = zip(teams, captains, instruc_list, works)
+
     all_num = school.number_team
     team_num = len(teams)
     surplus_num = all_num - team_num
@@ -322,8 +396,34 @@ def part_game_paper_all(request):
     session_school = request.session.get('userinfo', '')
     school = session_school['school']
     school = models.College.objects.get(school = school)
-    teams = models.Team.objects.filter(school = school,
+    teams_temp = models.Team.objects.filter(school = school,
                                        status_is_pass = "通过")
+    
+    teams = [t for t in teams_temp if t.work.status != "未上传"]
+    
+    captains = [t.telephone for t in teams]
+    works = [t.work for t in teams]
+
+    instruc_list = []
+    for t in teams:
+        instruc_inner = ["", ""]
+        temp_instruc = t.instru.all()
+        len_instruc = len(temp_instruc)
+        if len_instruc == 0:
+            instruc_list.append(instruc_inner)
+        elif len_instruc == 1:
+            for i in temp_instruc:
+                instruc_inner[0] = i
+            instruc_list.append(instruc_inner)
+        elif len_instruc == 2:
+            for i in temp_instruc:
+                if i.telephone == t.first_instru_telephone:
+                    instruc_inner[0] = i
+                else:
+                    instruc_inner[1] = i
+                instruc_list.append(instruc_inner)
+    #数据集合
+    zip_data = zip(teams, captains, instruc_list, works)
 #    works = [t.work for t in teams]
     
     all_num = school.number_team
@@ -333,6 +433,7 @@ def part_game_paper_all(request):
     if request.method == "GET":
         print("我是part_game_paper的GET")
         return render(request, "sch-game-all.html", locals())
+    
     elif request.method == "POST":
         teamFindForm = forms.TeamFindForm(request.POST, request.FILES)
         if teamFindForm.is_valid():
@@ -362,7 +463,6 @@ def team_pass(request, work_id):
     team.save()
     return redirect(reverse("school:game_team"))
     
-
 def team_no_pass(request, work_id):
     team = models.Team.objects.get(work_id = work_id)
     team.status_is_pass = "未通过"
@@ -448,13 +548,8 @@ def excel_download(request, context):
                     writer.writerow([team.group, team.work_group, team.telephone.telephone, team.school.school,
                                     fist_instruc.name, second_instruc.name, team.status])
 
-
-
-
     return HttpResponseRedirect(("/work/data_output/"+ context + temp_time + ".csv"))
     
-
-
 def pdf_download(request, context):
     session_school = request.session.get('userinfo', '')
     school = session_school['school']
@@ -472,6 +567,10 @@ def pdf_download(request, context):
     os.mkdir(dir_path)
     for w in works:
         file_name = str(w.paper_pdf)
+        
+        if file_name == "":
+            continue
+        
         src_file = "./work/" + file_name
 #        dst_file  = dir_path + src_file.strip("/")[-1]
         dst_folder  = dir_path
@@ -497,6 +596,9 @@ def word_download(request, context):
     os.mkdir(dir_path)
     for w in works:
         file_name = str(w.paper_word)
+        if file_name == "":
+            continue
+        
         src_file = "./work/" + file_name
 #        dst_file  = dir_path + src_file.strip("/")[-1]
         dst_folder  = dir_path
@@ -504,8 +606,6 @@ def word_download(request, context):
     zip_file(dir_path)
     
     return HttpResponseRedirect(("/work/data_output/" + dir_name + ".zip"))
-
-
 
 def my_submit(request, work_id):
     team = models.Team.objects.get(work_id = work_id)

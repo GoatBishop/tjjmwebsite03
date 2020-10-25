@@ -92,22 +92,33 @@
                                     <th>第一指导老师</th>
                                     <th>第二指导老师</th>
                                     <th>添加时间</th>
-                                    <th>状态</th>
+                                    <th>团队状态</th>
                                 </tr>
                             </thead>
                             <tbody>
                             {% if teams %}
-                                {% for t in teams %}
+                                {% for z in zip_data %}
                                         <tr>
-                                            <td>{{ t.group }}</td>
-                                            <td>{{ t.telephone.member_name }}</td>
-                                            <td>{{ t.telephone.telephone }}</td>
-                                            <td>{{ t.work_group }}</td>
-                                            <td>{{ t.school.school }}</td>
-                                            <td>-</td>
-                                            <td>-</td>
-                                            <td>{{ t.add_time }}</td>
-                                            <td>{{ t.status }}</td>
+                                            <td>{{ z.0.group }}</td>
+                                            <td>{{ z.1.member_name }}</td>
+                                            <td>{{ z.1.telephone }}</td>
+                                            <td>{{ z.0.work_group }}</td>
+                                            <td>{{ z.0.school.school }}</td>
+
+                                            {% if z.2.0 %}
+                                            <td>{{ z.2.0.name }}</td>
+                                            {% else %}
+                                            <td> - </td>
+                                            {% endif %}
+                                            
+                                            {% if z.2.1 %}
+                                            <td>{{ z.2.1.name }}</td>
+                                            {% else %}
+                                            <td> - </td>
+                                            {% endif %}
+
+                                            <td>{{ z.0.add_time }}</td>
+                                            <td>{{ z.0.status }}</td>
                                         </tr>
                                 {% endfor %}
                             {% endif %}
